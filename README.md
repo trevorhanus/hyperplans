@@ -10,11 +10,16 @@ This is an app starter project. It's meant to be a place to start when you want 
 - react
 - typescript
 - tailwindcss for styling
+- postgres database
 - typeorm for orm
+- typeorm migrations for db changes
 - graphQL for api
 - rollbar for error handling and logging
 - plume and aws for deployment
 - nextauthjs for user authentication
+- authorization :: oso?
+- transactional emails
+- lambdas - scheduled jobs that do stuff
 
 
 ## Getting Started
