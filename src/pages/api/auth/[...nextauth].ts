@@ -1,8 +1,7 @@
-import NextAuth from 'next-auth';
-import EmailProvider from 'next-auth/providers/email';
-import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +23,17 @@ export default NextAuth({
             async authorize(credentials, req) {
                 // find the user?
                 console.log(credentials);
-                return null;
+                const user = await prisma.user.findUnique({
+                    where: {
+                        email: credentials.email,
+                    }
+                });
+
+                if (!user) {
+                    return null;
+                }
+
+                return user;
             }
         }),
     ]
