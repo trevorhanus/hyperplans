@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon, XCircleIcon } from '@heroicons/react/outline';
-import Layout2 from 'components/page/Layout2';
+import Layout from 'components/page/Layout';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
@@ -29,7 +29,7 @@ const CreateFloorPlanPage: NextPage = () => {
     const { errors } = formState;
 
     return (
-        <Layout2 title="Generate a Floor Plan">
+        <Layout title="Generate a Floor Plan">
             <div>
                 <div className="max-w-sm mt-4">
                     {error && (
@@ -68,17 +68,8 @@ const CreateFloorPlanPage: NextPage = () => {
                         <Input
                             error={errors.width}
                             type="number"
-                            label="Height"
+                            label="Length"
                             {...register('height', {
-                                required: true,
-                            })}
-                        />
-
-                        <Input
-                            error={errors.width}
-                            type="number"
-                            label="Minimum length of a room"
-                            {...register('minRoomLength', {
                                 required: true,
                             })}
                         />
@@ -88,6 +79,15 @@ const CreateFloorPlanPage: NextPage = () => {
                             type="number"
                             label="Maximum length of a room"
                             {...register('maxRoomLength', {
+                                required: true,
+                            })}
+                        />
+
+                        <Input
+                            error={errors.width}
+                            type="number"
+                            label="Minimum length of a room"
+                            {...register('minRoomLength', {
                                 required: true,
                             })}
                         />
@@ -112,7 +112,7 @@ const CreateFloorPlanPage: NextPage = () => {
                     </form>
                 </div>
             </div>
-        </Layout2>
+        </Layout>
     );
 };
 

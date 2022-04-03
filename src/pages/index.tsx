@@ -1,9 +1,12 @@
-import Layout2 from 'components/page/Layout2';
-import RenderFloorPlanSvg from 'components/page/RenderFloorPlanSvg';
+import { PlusCircleIcon } from '@heroicons/react/outline';
+import Layout from 'components/page/Layout';
+import RenderFloorPlanSvg from 'components/RenderFloorPlanSvg';
 import { useFloorPlans } from 'hooks/useFloorPlans';
 import type { NextPage, NextPageContext } from 'next';
+import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 
-const Home: NextPage = () => {
+const FloorPlans: NextPage = () => {
     const { floorPlans, isLoading, error } = useFloorPlans();
 
     if (error) {
@@ -15,8 +18,22 @@ const Home: NextPage = () => {
     }
 
     return (
-        <Layout2
+        <Layout
             title="Floor Plans"
+            action={(
+                <Link href="/create">
+                    <button
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        <PlusCircleIcon
+                            className="w-5 h-5 mr-2 -ml-1"
+                            aria-hidden="true"
+                        />
+                        Generate
+                    </button>
+                </Link>
+            )}
         >
             <div>
                 <ul
@@ -41,14 +58,29 @@ const Home: NextPage = () => {
                     ))}
                 </ul>
             </div>
-        </Layout2>
+        </Layout>
     );
 };
 
 export async function getServerSideProps(context: NextPageContext) {
+    const { req } = context;
+
+    const session = await getSession({ req });
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/api/auth/signin',
+                permanent: false,
+            }
+        }
+    }
+    
     return {
-        props: {},
+        props: {
+            session,
+        },
     };
 }
 
-export default Home;
+export default FloorPlans;

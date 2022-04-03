@@ -64,7 +64,8 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
 
     return (
         <svg
-            width="100%"
+            width={imageWidth}
+            height={imageHeight}
             viewBox={`-60 -60 ${imageWidth} ${imageHeight}`}
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +77,14 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                 fill="none"
                 fillRule="evenodd"
             >
-                {rooms.map(room => renderRoom(room))}
+                {rooms.map(room => {
+                    return (
+                        <React.Fragment key={room.name}>
+                            {renderRoom(room)}
+                        </React.Fragment>
+                    )
+                })}
+
                 {exteriorWalls()}
 
                 <text
@@ -110,36 +118,6 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                 </text>
 
             </g>
-            {/* <g
-                id="Artboard"
-                stroke="none"
-                strokeWidth="1"
-                fill="none"
-                fillRule="evenodd"
-            >
-                <text
-                    id="40’"
-                    font-family="Montserrat-Medium, Montserrat"
-                    font-size="16"
-                    font-weight="400"
-                    fill="#363636"
-                >
-                    <tspan x="409.996" y="30">
-                        40’
-                    </tspan>
-                </text>
-                <text
-                    id="20’"
-                    font-family="Montserrat-Medium, Montserrat"
-                    font-size="16"
-                    font-weight="400"
-                    fill="#363636"
-                >
-                    <tspan x="17.78" y="213">
-                        20’
-                    </tspan>
-                </text>
-            </g> */}
         </svg>
     );
 };

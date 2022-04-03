@@ -4,11 +4,17 @@ import { FetchError, swrFetcher } from 'utils/fetcher';
 export interface UseSessionHook {
     isLoading: boolean;
     error?: FetchError;
-    user?: any;
+    user?: User;
+}
+
+export interface User {
+    email: string;
+    name: string;
+    image: string;
 }
 
 export interface Session {
-    email: string;
+    user?: User;
 }
 
 export const useSession = (): UseSessionHook => {
@@ -17,12 +23,9 @@ export const useSession = (): UseSessionHook => {
         swrFetcher
     );
 
-    console.log(error);
-    console.log(data);
-
     return {
         isLoading: !data && !error,
         error,
-        user: data?.email ? data : null,
+        user: data?.user ? data.user : null,
     };
 }

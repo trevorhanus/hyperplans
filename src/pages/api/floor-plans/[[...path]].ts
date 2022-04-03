@@ -1,19 +1,38 @@
 import { FloorPlanOptions, generateFloorPlan, getFloorPlan, getFloorPlans } from 'controllers/FloorPlan';
-import { apiRoute, NextApiRequestWithDb, NextApiResponseWithLocals, sendResponse, withDb } from 'utils/api';
+import { getSession } from 'next-auth/react';
+import { ApiError, apiRoute, NextApiRequestWithDb, NextApiResponseWithLocals, sendResponse, withDb } from 'utils/api';
 
 const floorPlans = apiRoute(router => {
 
     router.get('/', async (req: NextApiRequestWithDb, res: NextApiResponseWithLocals) => {
-        const floorPlans = await getFloorPlans('cl1hzrilp0011928waqrhn8wb');
+        const session = await getSession({ req });
+
+        if (!session.user) {
+            throw new ApiError('not authorized', 401);
+        }
+
+        const floorPlans = await getFloorPlans(session.user.id);
         sendResponse(res, 200, { floorPlans });
     });
 
     router.get('/:floorPlanId', async (req: NextApiRequestWithDb, res: NextApiResponseWithLocals) => {
-        const floorPlan = await getFloorPlan('cl1hzrilp0011928waqrhn8wb', req.query.floorPlanId as string);
+        const session = await getSession({ req });
+
+        if (!session.user) {
+            throw new ApiError('not authorized', 401);
+        }
+
+        const floorPlan = await getFloorPlan(session.user.id, req.query.floorPlanId as string);
         sendResponse(res, 200, floorPlan);
     });
 
     router.post('/', async (req: NextApiRequestWithDb, res: NextApiResponseWithLocals) => {
+        const session = await getSession({ req });
+
+        if (!session.user) {
+            throw new ApiError('not authorized', 401);
+        }
+
         const params: FloorPlanOptions = {
             title: req.body.title,
             width: parseFloat(req.body.width),
@@ -21,7 +40,7 @@ const floorPlans = apiRoute(router => {
             minRoomLength: parseFloat(req.body.minRoomLength),
             maxRoomLength: parseFloat(req.body.maxRoomLength),
             maxDoors: parseInt(req.body.maxDoors),
-            userId: 'cl1hzrilp0011928waqrhn8wb',
+            userId: session.user.id,
         };
 
         const floorPlan = await generateFloorPlan(params);

@@ -79,7 +79,7 @@ export async function generateFloorPlan(opts: FloorPlanOptions): Promise<FloorPl
     let roomX = planX / numRoomsX;
 
     if (roomX < minRoomLength) {
-        throw new Error('Floor plan is not possible.');
+        throw new Error('Minimum room length constraint violated. Try reducing.');
     }
 
     // Determine # of rooms in y direction
@@ -87,7 +87,15 @@ export async function generateFloorPlan(opts: FloorPlanOptions): Promise<FloorPl
     let roomY = planY / numRoomsY;
 
     if (roomY < minRoomLength) {
-        throw new Error('Floor plan is not possible.');
+        throw new Error('Minimum room length constraint violated. Try reducing.');
+    }
+
+    if (numRoomsX > 2 && maxDoors < 2) {
+        throw new Error('Floor plan is not possible, need at least 2 doors per room');
+    }
+
+    if (numRoomsY > 1 && maxDoors < 2) {
+        throw new Error('Floor plan is not possible, need at least 2 doors per room');
     }
 
     return prisma.floorPlan.create({

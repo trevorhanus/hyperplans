@@ -11,6 +11,7 @@ class PLDocument extends Document {
         return (
             <Html className="h-full bg-gray-100">
                 <Head>
+                    <link rel="shortcut icon" href="/favicon-256.png" />
                 </Head>
                 <body className="h-full">
                     <Main />

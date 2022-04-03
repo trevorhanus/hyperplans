@@ -202,5 +202,5 @@ function logRequest(res: NextApiResponseWithLocals, body?: any) {
         }
     };
 
-    console.log(data, `[${data.request.method}] ${data.response.status} ${data.user?.id || '-'} ${data.request.url}`);
+    console.log(`[${data.request.method}] ${data.response.status} ${data.user?.id || '-'} ${data.request.url}`);
 }
