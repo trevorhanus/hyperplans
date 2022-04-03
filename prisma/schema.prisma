@@ -61,8 +61,8 @@ model FloorPlan {
   title         String
   planX         Float
   planY         Float
-  numRoomsX     Int
-  numRoomsY     Int
+  rooms         Json[]
+  doors         Json[]
   userId        String
 
   user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)

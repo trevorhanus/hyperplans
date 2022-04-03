@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Route from 'route-parser';
 
@@ -170,17 +169,6 @@ export const apiRoute = (setup: (router: ApiRouter) => void): Handler => {
 //         await handler(userId, req, res);
 //     }
 // }
-
-export interface NextApiRequestWithDb extends NextApiRequest {
-    prisma: PrismaClient;
-}
-
-export function withDb(handler: Handler): Handler {
-    return async (req: NextApiRequestWithDb, res: NextApiResponseWithLocals) => {
-        req.prisma = new PrismaClient();
-        await handler(req, res);
-    }
-}
 
 function logRequest(res: NextApiResponseWithLocals, body?: any) {
     const { req } = res.locals;

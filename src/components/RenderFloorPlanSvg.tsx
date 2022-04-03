@@ -8,7 +8,7 @@ export interface RenderFloorPlanSvgProps {
 // 1 unit = 1 inch
 
 const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
-    const rooms = getRooms(floorPlan)
+    const { rooms, doors } = floorPlan;
 
     const exteriorWalls = () => {
         return (
@@ -24,9 +24,9 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
         );
     };
 
-    const renderRoom = (room: Room) => {
-        const centerX = room.x + (room.width / 2);
-        const centerY = room.y + (room.height / 2);
+    const renderRoom = (room) => {
+        const centerX = inches(room.x + (room.width / 2));
+        const centerY = inches(room.y + (room.length / 2));
 
         return (
             <>
@@ -34,10 +34,10 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                     id={room.name}
                     stroke="#363636"
                     strokeWidth={2}
-                    x={room.x}
-                    y={room.y}
-                    width={room.width}
-                    height={room.height}
+                    x={inches(room.x)}
+                    y={inches(room.y)}
+                    width={inches(room.width)}
+                    height={inches(room.length)}
                 />
                 <text
                     fontFamily="Montserrat-Medium, Montserrat"
@@ -54,6 +54,28 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                     </tspan>
                 </text>
             </>
+        )
+    };
+
+    const renderDoor = (door) => {
+        let width = 4;
+        let height = 36;
+
+        if (door.orientation === 'horizontal') {
+            width = 36;
+            height = 4;
+        }
+
+        return (
+            <rect
+                width={width}
+                height={height}
+                x={inches(door.cx) - width / 2}
+                y={inches(door.cy) - height / 2}
+                fill="#fff"
+                stroke="#363636"
+                strokeWidth={1}
+            />
         )
     };
 
@@ -81,6 +103,14 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                     return (
                         <React.Fragment key={room.name}>
                             {renderRoom(room)}
+                        </React.Fragment>
+                    )
+                })}
+
+                {doors.map((door, i) => {
+                    return (
+                        <React.Fragment key={i}>
+                            {renderDoor(door)}
                         </React.Fragment>
                     )
                 })}
@@ -121,46 +151,6 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
         </svg>
     );
 };
-
-interface Room {
-    name: string;
-    height: number;
-    width: number;
-    x: number;
-    y: number;
-}
-
-const getRooms = (floorPlan: FloorPlan) => {
-    const {
-        numRoomsX,
-        numRoomsY,
-        planX,
-        planY,
-    } = floorPlan;
-
-    const roomX = planX / numRoomsX;
-    const roomY = planY / numRoomsY;
-
-    const rooms: Room[] = [];
-
-    const cols = new Array(numRoomsX).fill(1);
-    const rows = new Array(numRoomsY).fill(1);
-
-    rows.forEach((_, row) => {
-        cols.forEach((_, col) => {
-            const roomNum = row * cols.length + (col + 1);
-            rooms.push({
-                name: `Room ${roomNum}`,
-                height: inches(roomY),
-                width: inches(roomX),
-                x: inches(col * roomX),
-                y: inches(row * roomY),
-            });
-        });
-    });
-
-    return rooms;
-}
 
 const inches = (ft: number) => ft * 12;
 

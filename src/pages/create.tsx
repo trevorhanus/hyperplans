@@ -1,6 +1,7 @@
 import { ExclamationCircleIcon, XCircleIcon } from '@heroicons/react/outline';
 import Layout from 'components/page/Layout';
 import { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -59,52 +60,72 @@ const CreateFloorPlanPage: NextPage = () => {
                         <Input
                             error={errors.width}
                             type="number"
-                            label="Width"
+                            label="Width (ft)"
                             {...register('width', {
                                 required: true,
+                                min: {
+                                    value: 4,
+                                    message: 'Width must be at least 4.',
+                                }
                             })}
                         />
 
                         <Input
-                            error={errors.width}
+                            error={errors.length}
                             type="number"
-                            label="Length"
-                            {...register('height', {
+                            label="Length (ft)"
+                            {...register('length', {
                                 required: true,
+                                min: {
+                                    value: 4,
+                                    message: 'Length must be at least 4.',
+                                }
                             })}
                         />
 
                         <Input
-                            error={errors.width}
+                            error={errors.maxRoomLength}
                             type="number"
-                            label="Maximum length of a room"
+                            label="Maximum length of a room (ft)"
                             {...register('maxRoomLength', {
                                 required: true,
                             })}
                         />
 
                         <Input
-                            error={errors.width}
+                            error={errors.minRoomLength}
                             type="number"
-                            label="Minimum length of a room"
+                            label="Minimum length of a room (ft)"
                             {...register('minRoomLength', {
                                 required: true,
                             })}
                         />
 
                         <Input
-                            error={errors.width}
+                            error={errors.maxDoors}
                             type="number"
                             label="Maximum number of doors in a room"
                             {...register('maxDoors', {
                                 required: true,
+                                min: {
+                                    value: 1,
+                                    message: 'Must be at least 1.'
+                                }
                             })}
                         />
 
-                        <div className="mt-4">
+                        <div className="flex justify-end mt-4">
+                            <Link href="/">
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Cancel
+                                </button>
+                            </Link>
                             <button
                                 type="submit"
-                                className="inline-flex items-center px-4 py-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="inline-flex items-center px-4 py-2 ml-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 Generate
                             </button>
