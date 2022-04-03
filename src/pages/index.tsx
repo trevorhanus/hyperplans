@@ -1,4 +1,5 @@
-import { PlusCircleIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon, ViewGridAddIcon } from '@heroicons/react/outline';
+import { PlusIcon } from '@heroicons/react/solid';
 import Layout from 'components/page/Layout';
 import RenderFloorPlanSvg from 'components/RenderFloorPlanSvg';
 import { useFloorPlans } from 'hooks/useFloorPlans';
@@ -10,17 +11,52 @@ const FloorPlans: NextPage = () => {
     const { floorPlans, isLoading, error } = useFloorPlans();
 
     if (error) {
-        return <div>Error!</div>
+        return <div>Error!</div>;
     }
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
+
+    const renderContent = () => {
+        if (floorPlans?.length === 0) {
+            return <EmptyState />;
+        }
+
+        return (
+            <div>
+                <ul
+                    role="list"
+                    className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+                >
+                    {floorPlans.map((floorPlan) => (
+                        <li key={floorPlan.id} className="relative">
+                            <div className="block w-full overflow-hidden bg-gray-100 rounded-lg group aspect-w-10 aspect-h-7 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500">
+                                <RenderFloorPlanSvg floorPlan={floorPlan} />
+                                <a
+                                    type="button"
+                                    className="absolute inset-0 focus:outline-none"
+                                    href={`/${floorPlan.id}`}
+                                >
+                                    <span className="sr-only">
+                                        View details for {floorPlan.title}
+                                    </span>
+                                </a>
+                            </div>
+                            <p className="block mt-2 text-sm font-medium text-gray-900 truncate pointer-events-none">
+                                {floorPlan.title}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
 
     return (
         <Layout
             title="Floor Plans"
-            action={(
+            action={
                 <Link href="/create">
                     <button
                         type="button"
@@ -33,34 +69,55 @@ const FloorPlans: NextPage = () => {
                         Generate
                     </button>
                 </Link>
-            )}
+            }
         >
-            <div>
-                <ul
-                    role="list"
-                    className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
-                >
-                    {floorPlans.map((floorPlan) => (
-                        <li key={floorPlan.id} className="relative">
-                            <div className="block w-full overflow-hidden bg-gray-100 rounded-lg group aspect-w-10 aspect-h-7 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500">
-                                <RenderFloorPlanSvg
-                                    floorPlan={floorPlan}
-                                />
-                                <a type="button" className="absolute inset-0 focus:outline-none"
-                                href={`/${floorPlan.id}`}>
-                                    <span className="sr-only">View details for {floorPlan.title}</span>
-                                </a>
-                            </div>
-                            <p className="block mt-2 text-sm font-medium text-gray-900 truncate pointer-events-none">
-                                {floorPlan.title}
-                            </p>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {renderContent()}
         </Layout>
     );
 };
+
+function EmptyState() {
+    return (
+        <div className="text-center">
+            {/* <svg
+                className="w-12 h-12 mx-auto text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+            >
+                <path
+                    vectorEffect="non-scaling-stroke"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                />
+            </svg> */}
+            <ViewGridAddIcon className="w-12 h-12 mx-auto text-gray-400" />
+            <h3 className="mt-2 text-sm font-medium text-gray-900">
+                No Floor Plans
+            </h3>
+            <p className="mt-1 text-sm text-gray-500">
+                Get started by generating a floor plan.
+            </p>
+            <div className="mt-6">
+                <Link href="/create">
+                    <button
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                        <PlusIcon
+                            className="w-5 h-5 mr-2 -ml-1"
+                            aria-hidden="true"
+                        />
+                        Generate
+                    </button>
+                </Link>
+            </div>
+        </div>
+    );
+}
 
 export async function getServerSideProps(context: NextPageContext) {
     const { req } = context;
@@ -72,10 +129,10 @@ export async function getServerSideProps(context: NextPageContext) {
             redirect: {
                 destination: '/api/auth/signin',
                 permanent: false,
-            }
-        }
+            },
+        };
     }
-    
+
     return {
         props: {
             session,
