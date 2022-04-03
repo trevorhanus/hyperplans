@@ -154,22 +154,6 @@ export const apiRoute = (setup: (router: ApiRouter) => void): Handler => {
     }
 }
 
-// export const withAuth = (handler: ProtectedHandler): Handler => {
-//     return async (req: NextApiRequest, res: NextApiResponseWithLocals) => {
-//         const auth0 = await getAuth0();
-//         const session = await auth0.getSession(req);
-//         const userId = session?.user?.id;
-    
-//         if (!userId) {
-//             throw new ApiError('Unauthorized', 401);
-//         }
-
-//         res.locals.userId = userId;
-
-//         await handler(userId, req, res);
-//     }
-// }
-
 function logRequest(res: NextApiResponseWithLocals, body?: any) {
     const { req } = res.locals;
 

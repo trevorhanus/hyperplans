@@ -1,6 +1,8 @@
 import Layout from 'components/page/Layout';
 import RenderFloorPlanSvg from 'components/RenderFloorPlanSvg';
 import { useFloorPlan } from 'hooks/useFloorPlan';
+import { NextPageContext } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
@@ -40,5 +42,26 @@ const FloorPlanViewerPage: FC<FloorPlanViewerPageProps> = (props) => {
         </Layout>
     );
 };
+
+export async function getServerSideProps(context: NextPageContext) {
+    const { req } = context;
+
+    const session = await getSession({ req });
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/api/auth/signin',
+                permanent: false,
+            },
+        };
+    }
+
+    return {
+        props: {
+            session,
+        },
+    };
+}
 
 export default FloorPlanViewerPage;
