@@ -1,13 +1,12 @@
 import { ExclamationCircleIcon, XCircleIcon } from '@heroicons/react/outline';
 import Layout from 'components/page/Layout';
-import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { fetcher, FetchError } from 'utils/fetcher';
 
-const CreateFloorPlanPage: NextPage = () => {
+function CreateFloorPlanPage() {
     const router = useRouter();
     const [ error, setError ] = useState<FetchError>(null);
     const { register, handleSubmit, formState } = useForm({});
@@ -135,7 +134,7 @@ const CreateFloorPlanPage: NextPage = () => {
             </div>
         </Layout>
     );
-};
+}
 
 export interface InputProps {
     error?: { type: string, message: string };
@@ -194,5 +193,7 @@ const Input: FC<InputProps> = React.forwardRef<HTMLInputElement, InputProps>(({
         </div>
     );
 });
+
+Input.displayName = 'Input';
 
 export default CreateFloorPlanPage;

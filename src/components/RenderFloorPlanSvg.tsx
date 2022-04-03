@@ -99,7 +99,7 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                 fill="none"
                 fillRule="evenodd"
             >
-                {rooms.map(room => {
+                {rooms.map((room: any) => {
                     return (
                         <React.Fragment key={room.name}>
                             {renderRoom(room)}
@@ -128,7 +128,7 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                     textAnchor="middle"
                 >
                     <tspan>
-                        {floorPlan.planX}'
+                        {floorPlan.planX}{"'"}
                     </tspan>
                 </text>
 
@@ -143,7 +143,7 @@ const RenderFloorPlanSvg: FC<RenderFloorPlanSvgProps> = ({ floorPlan }) => {
                     textAnchor="middle"
                 >
                     <tspan>
-                        {floorPlan.planY}'
+                        {floorPlan.planY}{"'"}
                     </tspan>
                 </text>
 
