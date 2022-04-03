@@ -117,14 +117,14 @@ function CreateFloorPlanPage() {
                             <Link href="/">
                                 <button
                                     type="button"
-                                    className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hyper-500"
                                 >
                                     Cancel
                                 </button>
                             </Link>
                             <button
                                 type="submit"
-                                className="inline-flex items-center px-4 py-2 ml-2 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="inline-flex items-center px-4 py-2 ml-2 text-base font-medium text-gray-800 border border-transparent rounded-md shadow-sm bg-hyper-600 hover:bg-hyper-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hyper-500"
                             >
                                 Generate
                             </button>
