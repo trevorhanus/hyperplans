@@ -1,5 +1,7 @@
 import { ExclamationCircleIcon, XCircleIcon } from '@heroicons/react/outline';
 import Layout from 'components/page/Layout';
+import { NextPageContext } from 'next';
+import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
@@ -195,5 +197,26 @@ const Input: FC<InputProps> = React.forwardRef<HTMLInputElement, InputProps>(({
 });
 
 Input.displayName = 'Input';
+
+export async function getServerSideProps(context: NextPageContext) {
+    const { req } = context;
+
+    const session = await getSession({ req });
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/api/auth/signin',
+                permanent: false,
+            },
+        };
+    }
+
+    return {
+        props: {
+            session,
+        },
+    };
+}
 
 export default CreateFloorPlanPage;
