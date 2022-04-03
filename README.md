@@ -1,33 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## HyperPlans
 
-## App Starter
+This is an app that generates floor plans from constraints.
 
-This is an app starter project. It's meant to be a place to start when you want to build a production level app. It is pretty opinionated about the solutions to use.
+## Running locally
 
-### Solutions
+First npm install:
 
-- nextjs
-- react
-- typescript
-- tailwindcss for styling
-- postgres database
-- prisma
-- graphQL for api
-- rollbar for error handling and logging
-- pulumi and aws for deployment
-- nextauthjs for user authentication
-- authorization :: oso?
-- lambdas - scheduled jobs that do stuff
-
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+```
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create an `.env` file:
+
+```
+DATABASE_URL="the_db_url"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+Run the development server:
+
+```
+npm run dev
+```
+
+Check it out at `localhost:3000`
+
+## Deployments
+
+Deployments are kicked off automatically via Vercell when we push the `main` branch to Github.
